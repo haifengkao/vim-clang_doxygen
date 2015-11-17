@@ -16,6 +16,10 @@ def handleClassDecl(c):
   doxygenLines = []
   className = c.spelling
 
+  # HF: className might be None
+  if not className:
+    className = "Description"
+
   # Class name
   if vim.eval("g:clang_doxygen_use_block") == "1":
     if vim.eval("g:clang_doxygen_block_no_newline") == "1":
