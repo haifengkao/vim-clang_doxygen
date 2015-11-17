@@ -234,6 +234,14 @@ def generateDoxygenForSourceLocation(line, col):
       return handleClassDecl(c)
     elif c.kind == CursorKind.CLASS_TEMPLATE:
       return handleClassDecl(c)
+    elif c.kind == CursorKind.OBJC_INSTANCE_METHOD_DECL:
+      return handleFunctionDecl(c)
+    elif c.kind == CursorKind.OBJC_INTERFACE_DECL:
+      return handleClassDecl(c)
+    elif c.kind == CursorKind.OBJC_CATEGORY_DECL:
+      return handleClassDecl(c)
+    elif c.kind == CursorKind.OBJC_IMPLEMENTATION_DECL:
+      return handleClassDecl(c)
     # Cursor is not on a supported type, go to the lexical parent
     else:
       c = c.lexical_parent
