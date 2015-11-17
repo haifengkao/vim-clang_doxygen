@@ -28,8 +28,10 @@ def handleClassDecl(c):
 
   doxygenLines[-1] += vim.eval("g:clang_doxygen_tag_brief") + "${" + str(tabStopCounter) + ":" + className + "}"
   tabStopCounter += 1
-  doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
-  doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + "$0")
+
+  # HF: we don't need full description
+  # doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
+  # doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + "$0")
 
   # Close block comment
   if vim.eval("g:clang_doxygen_use_block") == "1":
@@ -63,10 +65,12 @@ def handleFunctionDecl(c):
   else:
     doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
 
-  doxygenLines[-1] += vim.eval("g:clang_doxygen_tag_brief") + "${" + str(tabStopCounter) + ":" + functionName + "}"
+  doxygenLines[-1] += vim.eval("g:clang_doxygen_tag_brief") + "${" + str(tabStopCounter) + ":" + "Description" + "}"
   tabStopCounter += 1
-  doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
-  doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + "$0")
+
+  # HF:we don't need full description
+  # doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
+  # doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + "$0")
 
   # Extract parameters.
   # Only supported by libClang >= 3.1
@@ -78,7 +82,7 @@ def handleFunctionDecl(c):
   for arg in children:
     if arg.kind != CursorKind.PARM_DECL:
       continue
-    paramLines.append(vim.eval("g:clang_doxygen_comment_middle") + vim.eval("g:clang_doxygen_tag_param") + arg.spelling + " ${" + str(tabStopCounter) + ":" + arg.spelling + "}")
+    paramLines.append(vim.eval("g:clang_doxygen_comment_middle") + vim.eval("g:clang_doxygen_tag_param") + arg.spelling + " ${" + str(tabStopCounter) + ":" + arg.spelling + " description" +"}")
     tabStopCounter += 1
   if len(paramLines) > 0:
     doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
@@ -87,7 +91,7 @@ def handleFunctionDecl(c):
   # Check result type.
   if c.type.get_result().kind != TypeKind.VOID:
     doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle"))
-    doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + vim.eval("g:clang_doxygen_tag_return") + "${" + str(tabStopCounter) + ":" + c.type.get_result().kind.spelling + "}")
+    doxygenLines.append(vim.eval("g:clang_doxygen_comment_middle") + vim.eval("g:clang_doxygen_tag_return") + "${" + str(tabStopCounter) + ":" + "return value description" + "}")
     tabStopCounter += 1
 
   # Close block comment
